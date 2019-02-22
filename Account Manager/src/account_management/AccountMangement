@@ -1,0 +1,83 @@
+package account_mangement;
+
+import java.io.File; 
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import com.sun.javafx.runtime.SystemProperties;
+
+public class AccountMangement {
+	public static void main(String[] arges) throws FileNotFoundException {
+		File f1 = new File("Names/boys_names.txt");
+		Scanner input = new Scanner(f1);
+
+		String str = input.nextLine();
+		String[] info = str.split(" ");
+		String[] boys = new String[info.length - 1];
+
+		for (int i = 0; i < info.length - 1; i++) {
+			String[] temp = info[i + 1].split("\t");
+			boys[i] = temp[0];
+		}
+
+		f1 = new File("Names/girls_names.txt");
+		input = new Scanner(f1);
+
+		str = input.nextLine();
+		info = str.split("\t");
+
+		String[] splitcatcher = new String[info.length];
+		int splitcount = 0;
+
+		for (int i = 0; i < info.length; i++) {
+			String[] temp = info[i].split(" ");
+
+			if (temp.length > 1) {
+				info[i] = temp[0];
+
+				for (int j = 1; j < temp.length; j++) {
+					splitcatcher[splitcount] = temp[j];
+					splitcount++;
+				}
+			}
+		}
+
+		String[] girls = new String[info.length + splitcount];
+
+		for (int i = 0; i < info.length + splitcount; i++) {
+			if (i < splitcount) {
+				girls[i] = splitcatcher[i];
+			} else {
+				girls[i] = info[i - splitcount];
+			}
+		}
+
+		f1 = new File("Names/Last Names.txt");
+		input = new Scanner(f1);
+
+		String[] lastNames = new String[2000];
+
+		int count = 0;
+		
+		while (input.hasNextLine()) {
+			str = input.nextLine();
+			lastNames[count++] = str;
+		}
+		
+		UserBag userbag = new UserBag(5000);
+		 
+		for (int i = 0; i < 10; i++) {
+			User user = new User(boys, girls, lastNames);
+			user.setFirstName();
+			user.setlastName();
+			user.setId();
+			user.setUsername();
+			user.setGPA();
+			user.isMale();
+			user.setPassword();
+			userbag.add(user);
+		}
+		userbag.display();
+		
+	}
+}
