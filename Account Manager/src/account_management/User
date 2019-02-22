@@ -1,0 +1,90 @@
+package account_mangement;
+
+public class User {
+
+	private String firstName;
+	private String lastName;
+	private String id;
+	private boolean male = false;
+	private String username;
+	private String password;
+	private double gpa;
+
+	private String[] boys;
+	private String[] girls;
+	private String[] lastNames;
+	
+	private static int idCounter = 1;
+
+	public User(String[] boys, String[] girls, String[] lastNames) {
+		super();
+		this.boys = boys;
+		this.girls = girls;
+		this.lastNames = lastNames;
+	}
+
+	public void setFirstName() {
+		int gender = (int) (Math.random() * 2);
+
+		if (gender == 0) {
+			firstName = boys[(int) (Math.random() * 600)];
+		} else {
+			firstName = girls[(int) (Math.random() * 600)];
+		}
+
+	}
+
+	public void setlastName() {
+		lastName = lastNames[(int) (Math.random() * 2000)];
+	}
+
+	public void setId() {
+		id = idCounter + "";
+		
+		if(id.length() < 8){
+			int count = id.length(); 
+			String temp = ""; 
+			while(count < 8){
+				temp = temp + "0";
+				count ++;
+			}
+			id = temp + id;
+			idCounter++;
+		}
+	}
+	
+	public void isMale() {
+		for (int i = 0; i < boys.length; i++) {
+			if (firstName.equals(boys[i])) {
+				male = true;
+			}
+		}
+	}
+	
+	public void setUsername(){
+		if(lastName.length() <= 4){
+			username = lastName + firstName.substring(0, 1) + id.substring(7);
+		}else{
+			
+				username = lastName.substring(0, 4) + firstName.substring(0, 1) + id.substring(7);
+			
+		}
+	}
+	
+	public void setPassword(){
+		String capitolLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		String lowerLetters = "abcdefghijklmnopqrstuvwxyz";
+		String numbers = "0123456789";
+		String foward  = "\\";
+		String symbols = foward + "\"!#$%&'()*+,-./:;<=>@[]^_`{|}~\"";
+	}
+	
+	public void setGPA(){
+		gpa = ((double) ((int) (Math.random() * 41)) / 10);
+	}
+
+	@Override
+	public String toString() {
+		return firstName + " " + lastName + ", id: "+ id + ", username: "+ username + ", is male: " + male + ", GPA : " + gpa;
+	}
+}
