@@ -1,0 +1,21 @@
+package account_mangement;
+
+public class UserBag {
+	private User[] users; 
+	private int nElems;
+
+	public UserBag(int maxSize) {
+		users = new User[maxSize];
+		nElems = 0;
+	}
+	
+	public void add(User user) {
+		users[nElems++] = user;
+	}
+
+	public void display() {
+		for (int i = 0; i < nElems; i++) {
+			System.out.println(users[i] + " ");
+		}
+	}
+}
