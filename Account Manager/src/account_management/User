@@ -16,6 +16,10 @@ public class User {
 	
 	private static int idCounter = 1;
 
+	public User() {
+		super();
+	}
+
 	public User(String[] boys, String[] girls, String[] lastNames) {
 		super();
 		this.boys = boys;
@@ -40,19 +44,19 @@ public class User {
 
 	public void setId() {
 		id = idCounter + "";
-		
-		if(id.length() < 8){
-			int count = id.length(); 
-			String temp = ""; 
-			while(count < 8){
+
+		if (id.length() < 8) {
+			int count = id.length();
+			String temp = "";
+			while (count < 8) {
 				temp = temp + "0";
-				count ++;
+				count++;
 			}
 			id = temp + id;
 			idCounter++;
 		}
 	}
-	
+
 	public void isMale() {
 		for (int i = 0; i < boys.length; i++) {
 			if (firstName.equals(boys[i])) {
@@ -60,31 +64,90 @@ public class User {
 			}
 		}
 	}
-	
-	public void setUsername(){
-		if(lastName.length() <= 4){
+
+	public void setUsername() {
+		if (lastName.length() <= 4) {
 			username = lastName + firstName.substring(0, 1) + id.substring(7);
-		}else{
-			
-				username = lastName.substring(0, 4) + firstName.substring(0, 1) + id.substring(7);
-			
+		} else {
+
+			username = lastName.substring(0, 4) + firstName.substring(0, 1) + id.substring(7);
+
 		}
 	}
-	
-	public void setPassword(){
+
+	public void setPassword() {
 		String capitolLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		String lowerLetters = "abcdefghijklmnopqrstuvwxyz";
 		String numbers = "0123456789";
-		String foward  = "\\";
+		String foward = "\\";
 		String symbols = foward + "\"!#$%&'()*+,-./:;<=>@[]^_`{|}~\"";
+
+		char[] word = new char[8];
+		word[0] = capitolLetters.charAt((int) (Math.random() * 26));
+		word[1] = lowerLetters.charAt((int) (Math.random() * 26));
+		word[2] = numbers.charAt((int) (Math.random() * 10));
+		word[3] = symbols.charAt((int) (Math.random() * 31));
+		word[4] = capitolLetters.charAt((int) (Math.random() * 26));
+		word[5] = lowerLetters.charAt((int) (Math.random() * 26));
+		word[6] = numbers.charAt((int) (Math.random() * 10));
+		word[7] = symbols.charAt((int) (Math.random() * 31));
+
+		for (int i = 0; i < word.length; i++) {
+			int rnd = (int) (Math.random() * 8);
+
+			char letter = word[rnd];
+			word[rnd] = word[i];
+			word[i] = letter;
+		}
+
+		password = new String(word);
 	}
-	
-	public void setGPA(){
+
+	public void setGPA() {
 		gpa = ((double) ((int) (Math.random() * 41)) / 10);
 	}
 
 	@Override
 	public String toString() {
-		return firstName + " " + lastName + ", id: "+ id + ", username: "+ username + ", is male: " + male + ", GPA : " + gpa;
+		return firstName + " " + lastName + ", id: " + id + ", username: " + username + ", is male: " + male
+				+ ", password : " + password + ", GPA : " + gpa;
+	}
+
+	public Boolean makeAccount(String first, String last, String gender, String gpa, String password) {
+		Boolean test = true;
+
+		if (first.equals("")) {
+			test = false;
+		}
+
+		firstName = first;
+		if (last.equals("")) {
+			test = false;
+		}
+
+		lastName = last;
+		if (gender.toUpperCase().equals("M")) {
+			male = true;
+		} else if (gender.toUpperCase().equals("F")) {
+			male = false;
+		} else {
+			test = false;
+		}
+		
+		// test password
+		
+		this.password = password;
+
+		if(Double.parseDouble(gpa) >= 0.0 && Double.parseDouble(gpa) <= 4.0){
+			this.gpa = Double.parseDouble(gpa);
+		}else{
+			test = false;
+		}
+		
+		if(test == true){
+			setId();
+			setUsername();
+		}
+		return test;
 	}
 }
