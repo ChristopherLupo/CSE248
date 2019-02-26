@@ -1,7 +1,9 @@
 package account_mangement;
 
-import java.io.File; 
+import java.io.File;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -38,6 +40,9 @@ public class AccountMangement extends Application {
 		input = new Scanner(f1);
 
 		str = input.nextLine();
+		info = str.split("\t\t");
+
+		str = info[0] + info[1];
 		info = str.split("\t");
 
 		String[] splitcatcher = new String[info.length];
@@ -80,28 +85,43 @@ public class AccountMangement extends Application {
 
 		UserBag userbag = new UserBag(5000);
 
-		// String.matches("[!-/0-9:->[-`{-~a-zA-Z]{8}"
-
-		/*
-		 * for (int i = 0; i < 10; i++) { User user = new User(boys, girls,
-		 * lastNames); user.setFirstName(); user.setlastName(); user.setId();
-		 * user.setUsername(); user.setGPA(); user.isMale(); user.setPassword();
-		 * userbag.add(user); } userbag.display();
-		 */
+		userbag.fill(boys, girls, lastNames);
+		// userbag.display();
 
 		Button b1 = new Button("Sign up");
 		Label l1 = new Label(" or ");
-		Button b2 = new Button("Find Account");
+		Button b2 = new Button("Find User");
+		Label l2 = new Label(" or ");
+		Button b3 = new Button("Find Account");
 		HBox start = new HBox();
-		start.getChildren().addAll(b1, l1, b2);
+		start.getChildren().addAll(b1, l1, b2, l2, b3);
 
 		start.setAlignment(Pos.CENTER);
 
-		Scene scene = new Scene(start, 200, 200);
+		Scene scene = new Scene(start, 300, 200);
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Account Mananger");
 		primaryStage.show();
+
+		Text userFind = new Text("Enter Username to find a user:");
+		TextField userField = new TextField();
+		Button enterUser = new Button("Find user:");
+		VBox vb1 = new VBox();
+		vb1.getChildren().addAll(userFind, userField, enterUser);
+		vb1.setAlignment(Pos.CENTER);
+		Scene findUser = new Scene(vb1);
+
+		Text passFind = new Text("Enter Username and Password to find a user:");
+		TextField usernameField = new TextField();
+		usernameField.setPromptText("Enter Username:");
+		TextField passField = new TextField();
+		passField.setPromptText("Enter Password");
+		Button enterPass = new Button("Find user:");
+		VBox vb2 = new VBox();
+		vb2.getChildren().addAll(passFind, usernameField, passField, enterPass);
+		vb2.setAlignment(Pos.CENTER);
+		Scene findPass = new Scene(vb2);
 
 		Text firstName1 = new Text("Enter First Name:");
 		TextField firstName2 = new TextField();
@@ -119,40 +139,92 @@ public class AccountMangement extends Application {
 				"Enter a password thats 8 characters long: \nNeeds one capital and lowercase letter, a number and a special special character:");
 		TextField password2 = new TextField();
 
-		Button b3 = new Button("Make Account");
+		Button makeAccount = new Button("Make Account");
 
-		VBox vb1 = new VBox();
-		vb1.setAlignment(Pos.CENTER);
-		vb1.getChildren().addAll(firstName1, firstName2, lastName1, lastName2, gender1, gender2, gpa1, gpa2, password1,
-				password2, b3);
+		VBox vb3 = new VBox();
+		vb3.setAlignment(Pos.CENTER);
+		vb3.getChildren().addAll(firstName1, firstName2, lastName1, lastName2, gender1, gender2, gpa1, gpa2, password1,
+				password2, makeAccount);
 
-		Scene sign = new Scene(vb1);
+		Scene signUp = new Scene(vb3);
 
 		b1.setOnAction(e -> {
-			primaryStage.setScene(sign);
+			primaryStage.setScene(signUp);
+		});
+
+		b2.setOnAction(e -> {
+			primaryStage.setScene(findUser);
 		});
 
 		b3.setOnAction(e -> {
-			User user = new User();
+			primaryStage.setScene(findPass);
+		});
 
-			Boolean test = user.makeAccount(firstName2.getText(), lastName2.getText(), gender2.getText(),
-					gpa2.getText(), password2.getText());
-			
+		enterUser.setOnAction(e -> {
 			Label l = new Label();
 			Scene scene1 = new Scene(l);
 			Stage stage = new Stage();
 			stage.setScene(scene1);
-			
-			if(test == true){
-				l.setText("Success");
+
+			if (userbag.searchAccount(userField.getText()) == true) {
+				l.setText("Their is an account by that username");
+				primaryStage.setScene(scene);
 				stage.show();
-				
+			} else {
+				l.setText("Their is no account by that username");
+				stage.show();
+			}
+			userField.setText("");
+		});
+
+		enterPass.setOnAction(e -> {
+			Label l = new Label();
+			Scene scene1 = new Scene(l);
+			Stage stage = new Stage();
+			stage.setScene(scene1);
+
+			if (userbag.searchAccount(usernameField.getText(), passField.getText()) == true) {
+				l.setText("Their is an account by that username and password");
+				primaryStage.setScene(scene);
+				stage.show();
+			} else {
+				l.setText("Either the username or password is wrong");
+				stage.show();
+			}
+			usernameField.setText("");
+			passField.setText("");
+		});
+
+		makeAccount.setOnAction(e -> {
+			User user = new User();
+
+			Boolean test = user.makeAccount(firstName2.getText(), lastName2.getText(), gender2.getText(),
+					gpa2.getText(), password2.getText());
+
+			Label l = new Label();
+			Scene scene1 = new Scene(l);
+			Stage stage = new Stage();
+			stage.setScene(scene1);
+
+			if (test == true) {
+				l.setText("Success");
+
 				userbag.add(user);
 				userbag.display();
-			}else{
+
+				firstName2.setText("");
+				lastName2.setText("");
+				gender2.setText("");
+				gpa2.setText("");
+				password2.setText("");
+
+				primaryStage.setScene(scene);
+				stage.show();
+			} else {
 				l.setText("Failure");
 				stage.show();
 			}
+
 		});
 
 	}
