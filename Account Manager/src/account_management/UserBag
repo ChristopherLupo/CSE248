@@ -1,21 +1,63 @@
 package account_mangement;
 
 public class UserBag {
-	private User[] users; 
+	private User[] users;
 	private int nElems;
 
 	public UserBag(int maxSize) {
 		users = new User[maxSize];
 		nElems = 0;
 	}
-	
+
 	public void add(User user) {
 		users[nElems++] = user;
+	}
+
+	public void fill(String[] boys, String[] girls, String[] lastNames) {
+
+		for (int i = 0; i < 3000; i++) {
+			User u = new User();
+
+			int gender = (int) (Math.random() * 2);
+
+			if (gender == 0) {
+				u.setFirstName(boys[(int) (Math.random() * boys.length)]);
+			} else {
+				u.setFirstName(girls[(int) (Math.random() * girls.length)]);
+			}
+			
+			u.setlastName(lastNames[(int) (Math.random() * lastNames.length)]);
+
+			u.setId();
+			u.isMale(boys);
+			u.setGPA();
+			u.setPassword();
+			u.setUsername();
+			add(u);
+		}
 	}
 
 	public void display() {
 		for (int i = 0; i < nElems; i++) {
 			System.out.println(users[i] + " ");
 		}
+	}
+	
+	public boolean searchAccount(String username){
+		for (int i = 0; i < nElems; i++) {
+		if(username.equals(users[i].getUsername())){
+			return true;
+		}
+		}
+		return false;
+	}
+	
+	public boolean searchAccount(String username, String password){
+		for (int i = 0; i < nElems; i++) {
+		if(username.equals(users[i].getUsername()) && password.equals(users[i].getPassword())){
+			return true;
+		}
+		}
+		return false;
 	}
 }
