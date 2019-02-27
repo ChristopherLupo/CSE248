@@ -23,8 +23,16 @@ public class User {
 		this.firstName = firstName;
 	}
 
-	public void setlastName(String lastName) {
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getLastName() {
+		return lastName;
 	}
 
 	public void setId() {
@@ -42,12 +50,20 @@ public class User {
 		}
 	}
 
+	public String getId() {
+		return id;
+	}
+
 	public void isMale(String[] boys) {
 		for (int i = 0; i < boys.length; i++) {
 			if (firstName.equals(boys[i])) {
 				male = true;
 			}
 		}
+	}
+
+	public boolean isMale() {
+		return male;
 	}
 
 	public void setUsername() {
@@ -99,6 +115,10 @@ public class User {
 
 	public void setGPA() {
 		gpa = ((double) ((int) (Math.random() * 41)) / 10);
+	}
+
+	public double getGPA() {
+		return gpa;
 	}
 
 	@Override
