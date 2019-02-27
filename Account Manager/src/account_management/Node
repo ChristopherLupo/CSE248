@@ -1,0 +1,33 @@
+package account_mangement;
+
+public class Node {
+	private Node leftChild;
+	private Node rightChild;
+
+	private User user;
+
+	public Node getLeftChild() {
+		return leftChild;
+	}
+
+	public void setLeftChild(Node leftChild) {
+		this.leftChild = leftChild;
+	}
+
+	public Node getRightChild() {
+		return rightChild;
+	}
+
+	public void setRightChild(Node rightChild) {
+		this.rightChild = rightChild;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+}
