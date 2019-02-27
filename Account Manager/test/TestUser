@@ -1,0 +1,70 @@
+package test_account_mangement;
+
+import account_mangement.User;
+import junit.framework.TestCase;
+
+public class TestUser extends TestCase {
+
+	public void test() {
+		User user = new User();
+
+		// Testing with no first name, should return false
+		boolean test = user.makeAccount("", "Last", "m", "4.0", "HIhi**12");
+		assertEquals(false, test);
+
+		// Testing with no last name, should return false
+		test = user.makeAccount("First", "", "m", "4.0", "HIhi**12");
+		assertEquals(false, test);
+
+		// Testing with gender that does not exist, should return false
+		test = user.makeAccount("First", "Last", "n", "4.0", "HIhi**12");
+		assertEquals(false, test);
+
+		// Testing with gpa out of range, should return false
+		test = user.makeAccount("First", "Last", "m", "4.1", "HIhi**12");
+		assertEquals(false, test);
+
+		// Testing with gpa that isn't a number, should return false
+		test = user.makeAccount("First", "Last", "m", "number", "HIhi**12");
+		assertEquals(false, test);
+
+		// Testing with password that is too short, should return false
+		test = user.makeAccount("First", "Last", "m", "4.0", "HIhi**1");
+		assertEquals(false, test);
+
+		// Testing with password that is too long, should return false
+		test = user.makeAccount("First", "Last", "m", "4.0", "HIhi**123");
+		assertEquals(false, test);
+
+		// Testing with password that does not have a capital, should return false
+		test = user.makeAccount("First", "Last", "m", "4.0", "hihi**12");
+		assertEquals(false, test);
+
+		// Testing with password that does not have a lowercase, should return false
+		test = user.makeAccount("First", "Last", "m", "4.0", "HIHI**12");
+		assertEquals(false, test);
+
+		// Testing with password that does not have a special character, should return false
+		test = user.makeAccount("First", "Last", "m", "4.0", "HIhihi12");
+		assertEquals(false, test);
+
+		// Testing with password that does not have a special character, should return false
+		test = user.makeAccount("First", "Last", "m", "4.0", "HIhihi12");
+		assertEquals(false, test);
+		
+		// Testing with password that does not have a number, should return false
+		test = user.makeAccount("First", "Last", "m", "4.0", "HIhi****");
+		assertEquals(false, test);
+	
+		// Testing a case that should work perfectly, should return true
+		test = user.makeAccount("First", "Last", "m", "4.0", "HIhi**12");
+		assertEquals(true, test);
+		
+		// Testing get password
+		assertEquals("HIhi**12", user.getPassword());
+		
+		// Testing get username
+		assertEquals("LastF1", user.getUsername());
+	}
+
+}
