@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 public class TestUserBag extends TestCase {
 	
 	public void test() {
-		UserBag userBag = new UserBag(5000);
+		UserBag userBag = new UserBag();
 		User user = new User();
 		user.makeAccount("First", "Last", "m", "4.0", "HIhi**12");
 		
