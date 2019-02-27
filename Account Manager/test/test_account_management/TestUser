@@ -60,6 +60,21 @@ public class TestUser extends TestCase {
 		test = user.makeAccount("First", "Last", "m", "4.0", "HIhi**12");
 		assertEquals(true, test);
 		
+		// Testing get firstname
+		assertEquals("First", user.getFirstName());
+				
+		// Testing get lastname
+		assertEquals("Last", user.getLastName());
+		
+		// Testing get gender
+		assertEquals(true, user.isMale());
+				
+		// Testing get GPA
+		assertEquals(4.0, user.getGPA());
+		
+		// Testing get ID
+		assertEquals("00000001", user.getId());
+		
 		// Testing get password
 		assertEquals("HIhi**12", user.getPassword());
 		
