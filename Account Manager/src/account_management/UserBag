@@ -1,16 +1,34 @@
 package account_mangement;
 
 public class UserBag {
-	private User[] users;
-	private int nElems;
-
-	public UserBag(int maxSize) {
-		users = new User[maxSize];
-		nElems = 0;
-	}
+	private Node root;
 
 	public void add(User user) {
-		users[nElems++] = user;
+		Node newNode = new Node();
+		newNode.setUser(user);
+
+		if (root == null) {
+			root = newNode;
+		} else {
+			Node current = root;
+			Node parent;
+			while (true) {
+				parent = current;
+				if (current.getUser().getUsername().compareTo(newNode.getUser().getUsername()) > 0) {
+					current = current.getLeftChild();
+					if (current == null) {
+						parent.setLeftChild(newNode);
+						return;
+					}
+				} else {
+					current = current.getRightChild();
+					if (current == null) {
+						parent.setRightChild(newNode);
+						return;
+					}
+				}
+			}
+		}
 	}
 
 	public void fill(String[] boys, String[] girls, String[] lastNames) {
@@ -25,8 +43,8 @@ public class UserBag {
 			} else {
 				u.setFirstName(girls[(int) (Math.random() * girls.length)]);
 			}
-			
-			u.setlastName(lastNames[(int) (Math.random() * lastNames.length)]);
+
+			u.setLastName(lastNames[(int) (Math.random() * lastNames.length)]);
 
 			u.setId();
 			u.isMale(boys);
@@ -38,26 +56,53 @@ public class UserBag {
 	}
 
 	public void display() {
-		for (int i = 0; i < nElems; i++) {
-			System.out.println(users[i] + " ");
-		}
+
+		display(root);
+
 	}
 	
-	public boolean searchAccount(String username){
-		for (int i = 0; i < nElems; i++) {
-		if(username.equals(users[i].getUsername())){
-			return true;
+	public void display(Node localRoot){
+		if (localRoot != null) {
+			display(localRoot.getLeftChild());
+			System.out.println(localRoot.getUser().toString());
+			display(localRoot.getRightChild());
 		}
-		}
-		return false;
 	}
-	
-	public boolean searchAccount(String username, String password){
-		for (int i = 0; i < nElems; i++) {
-		if(username.equals(users[i].getUsername()) && password.equals(users[i].getPassword())){
+
+	public boolean searchAccount(String username) {
+		Node current = root;
+		while (current.getUser().getUsername().compareTo(username) != 0
+				&& current.getUser().getUsername().equals(username) != true) {
+			if (current.getUser().getUsername().compareTo(username) > 0) {
+				current = current.getLeftChild();
+			} else {
+				current = current.getRightChild();
+			}
+			if (current == null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean searchAccount(String username, String password) {
+		Node current = root;
+		while (current.getUser().getUsername().compareTo(username) != 0
+				&& current.getUser().getUsername().equals(username) != true) {
+			if (current.getUser().getUsername().compareTo(username) > 0) {
+				current = current.getLeftChild();
+			} else {
+				current = current.getRightChild();
+			}
+			if (current == null) {
+				return false;
+			}
+		}
+
+		if (current.getUser().getPassword().equals(password)) {
 			return true;
 		}
-		}
 		return false;
+
 	}
 }
